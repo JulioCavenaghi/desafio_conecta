@@ -57,7 +57,7 @@ CREATE DATABASE nome_do_banco CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 php spark migrate
 ```
 
-### 6. Inicie o servidor
+### 7. Inicie o servidor
 ```bash
 php spark serve
 ```
