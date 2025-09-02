@@ -1,68 +1,121 @@
-# CodeIgniter 4 Application Starter
+# 🚀 API CRUD de Usuários
 
-## What is CodeIgniter?
+## 📌 Sobre o Projeto
+Este projeto é uma API RESTful desenvolvida em PHP utilizando CodeIgniter 4 para gerenciamento de usuários.  
+Permite operações CRUD (GET, POST, PUT, DELETE) com dados armazenados em MySQL.  
+As respostas são retornadas em formato **JSON**, com **validação de entradas**, **tratamento de erros** e **autenticação básica de API via filtro**.
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+---
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+## ⚙️ Funcionalidades
+- ✅ Criar usuários (`POST /api/users`)
+- ✅ Listar usuários (`GET /api/users`)
+- ✅ Listar usuários ativos (`GET /api/users/active`)
+- ✅ Detalhar usuário (`GET /api/users/{id}`)
+- ✅ Atualizar usuário (`PUT/PATCH /api/users/{id}`)
+- ✅ Deletar usuário (`DELETE /api/users/{id}`)
+- 🔒 Autenticação de API por filtro (`apiauth`)
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+---
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+## 🛠️ Instalação e Configuração
 
-## Installation & updates
+### 1. Clone o repositório
+```bash
+git clone https://github.com/JulioCavenaghi/desafio_conecta
+cd desafio_conecta
+```
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+### 2. Instale as dependências
+```bash
+composer install
+```
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+### 3. Copie o arquivo env de exemplo e renomeie para .env
+```bash
+cp env .env
+```
 
-## Setup
+### 4. Edite as variáveis de ambiente no .env:
+```env
+app.baseURL = 'http://localhost:8080/'
+API_KEY = 'sua_senha_api'
+database.default.hostname = seu_host
+database.default.database = seu_banco
+database.default.username = seu_usuario
+database.default.password = sua_senha
+database.default.DBDriver = MySQLi
+```
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+### 5. Crie o banco de dados
+```sql
+CREATE DATABASE nome_do_banco CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
 
-## Important Change with index.php
+### 6. Execute as migrations
+```bash
+php spark migrate
+```
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+### 6. Inicie o servidor
+```bash
+php spark serve
+```
+A API estará disponível em: http://localhost:8080/api/
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+## 📖 Endpoints
 
-**Please** read the user guide for a better explanation of how CI4 works!
+➕ Criar Usuário
+```curl
+curl -X POST http://localhost:8080/api/users \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer SUA_API_KEY" \
+  -d '{
+    "name": "João Silva",
+    "email": "joao@email.com",
+    "password": "minhasenha",
+    "password_confirm": "minhasenha",
+    "status": 1
+  }'
 
-## Repository Management
+```
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+📋 Listar Todos os Usuários
+```curl
+curl -X GET http://localhost:8080/api/users \
+  -H "Authorization: Bearer SUA_API_KEY"
+```
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+📋 Listar Usuários Ativos
+```curl
+curl -X GET http://localhost:8080/api/users/active \
+  -H "Authorization: Bearer SUA_API_KEY"
+```
 
-## Server Requirements
+🔍 Detalhar Usuário (por ID)
+```curl
+curl -X GET http://localhost:8080/api/users/1 \
+  -H "Authorization: Bearer SUA_API_KEY"
+```
 
-PHP version 8.1 or higher is required, with the following extensions installed:
+✏️ Atualizar Usuário (PUT)
+```curl
+curl -X PUT http://localhost:8080/api/users/1 \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer SUA_API_KEY" \
+  -d '{
+    "name": "João Silva Atualizado",
+    "email": "joao.silva@email.com",
+    "status": 0
+  }'
+```
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+❌ Deletar Usuário
+```curl
+curl -X DELETE http://localhost:8080/api/users/1 \
+  -H "Authorization: Bearer SUA_API_KEY"
+```
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - If you are still using PHP 7.4 or 8.0, you should upgrade immediately.
-> - The end of life date for PHP 8.1 will be December 31, 2025.
 
-Additionally, make sure that the following extensions are enabled in your PHP:
 
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+
